@@ -20,3 +20,25 @@ Even if you are familiar with Django query syntax, the syntax still is still a b
 
 This project allows you to write queries in a simpler way by using the normal python operators
 like ``==``, ``>`` and ``<``.
+
+Quickstart
+==========
+
+For this quickstart we'll use the User model provided by the Django auth module.
+
+When you want to create a query that filters all users by their first name and last name you write:
+
+.. code-block:: python
+    User.objects.filter(first_name='Foo', last_name='Bar')
+
+Or if you want to be a bit more explicit you can use Q objects:
+
+.. code-block:: python
+    User.objects.filter(Q(first_name='Foo') & Q(last_name='Bar'))
+
+Using natural queries you can simply type:
+
+.. code-block:: python
+    User.objects.filter(User.first_name == 'Foo' & User.last_name == 'Bar')
+
+These expressions evaluate to Q objects which in their turn are being used by Django.
