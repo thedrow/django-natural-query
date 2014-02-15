@@ -40,6 +40,9 @@ class NaturalQueryFieldMixin(object):
     def __le__(self, other):
         return self.transform_operator_to_query_object('lte', other)
 
+    def __ne__(self, other):
+        return ~self.transform_operator_to_query_object('exact', other)
+
     def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
         constructed_lookup = self.construct_lookup(lookup_type)

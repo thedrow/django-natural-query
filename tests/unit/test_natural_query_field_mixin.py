@@ -78,7 +78,7 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_less_than_operator_generates_the_right_expression_for_the_gt_lookup(self):
+    def test_less_than_operator_generates_the_right_expression_for_the_lt_lookup(self):
         sut = self.system_under_test
         expected = Q(field__lt=sentinel.VALUE)
 
@@ -86,7 +86,7 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_less_than_operator_generates_the_right_expression_for_the_gt_lookup_when_comparing_to_another_field(self):
+    def test_less_than_operator_generates_the_right_expression_for_the_lt_lookup_when_comparing_to_another_field(self):
         sut = self.system_under_test
         expected = Q(field__lt=F(sentinel.FIELD_NAME))
 
@@ -94,7 +94,7 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_gte_lookup(self):
+    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_lte_lookup(self):
         sut = self.system_under_test
         expected = Q(field__lte=sentinel.VALUE)
 
@@ -102,11 +102,27 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_gte_lookup_when_comparing_to_another_field(self):
+    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_lte_lookup_when_comparing_to_another_field(self):
         sut = self.system_under_test
         expected = Q(field__lte=F(sentinel.FIELD_NAME))
 
         actual = sut <= self.field
+
+        self.assertEqual(actual, expected)
+        
+    def test_not_equal_operator_generates_the_right_negated_expression_for_the_exact_lookup(self):
+        sut = self.system_under_test
+        expected = ~Q(field__exact=sentinel.VALUE)
+
+        actual = sut != sentinel.VALUE
+
+        self.assertEqual(actual, expected)
+
+    def test_not_equal_operator_generates_the_right_negated_expression_for_the_exact_lookup_when_comparing_to_another_field(self):
+        sut = self.system_under_test
+        expected = ~Q(field__exact=F(sentinel.FIELD_NAME))
+
+        actual = sut != self.field
 
         self.assertEqual(actual, expected)
 
