@@ -157,6 +157,14 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_negating_generates_the_right_expression_for_the_not_lookup(self):
+        sut = self.system_under_test
+        expected = ~Q('field')
+
+        actual = ~sut
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
     @classmethod

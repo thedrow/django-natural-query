@@ -51,6 +51,9 @@ class NaturalQueryFieldMixin(object):
     def __ne__(self, other):
         return ~self.transform_operator_to_query_object('exact', other)
 
+    def __invert__(self):
+        return ~Q(self.name)
+
 
 class NaturalQueryModelMixin(object):
     @classmethod
