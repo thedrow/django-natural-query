@@ -180,7 +180,7 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         return Field(name=sentinel.FIELD_NAME)
 
     @expectedFailure
-    def test_concated_equals_operator_generates_the_right_expression_for_the_exact_lookup(self):
+    def test_concated_equals_operator_generates_the_wrong_expression_for_the_exact_lookup(self):
         sut = self.system_under_test
         expected = Q(field__exact=sentinel.VALUE)
 
