@@ -9,7 +9,13 @@ def _mixin(model_class, *mixins):
         mixin.__mixin__(model_class)
 
 
-class NaturalQueryMixin(object):
+class NaturalQueryFieldMixin(object):
+    pass
+
+
+class NaturalQueryModelMixin(object):
     @classmethod
     def __mixin__(cls, model_class):
-        pass
+        fields = dict(model_class._meta.get_fields_with_model()).keys()
+        for field in fields:
+            setattr(model_class, field.name, field)

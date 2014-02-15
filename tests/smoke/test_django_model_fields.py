@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.test import SimpleTestCase
 
-from tests.smoke.support.models import TestModel
+from tests.common.support.models import TestModel
 
 
 class DjangoModelFieldsTestCase(SimpleTestCase):
