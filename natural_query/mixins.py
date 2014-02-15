@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import operator
 from django.db.models import Q, Field, F
-from django.db.models.lookups import default_lookups
 
 
 def _mixin(model_or_field_class, *mixins):
@@ -27,13 +25,25 @@ def create_query_object(constructed_lookup, other):
 
 
 class NaturalQueryFieldMixin(object):
+    def __eq__(self, other):
+        return self.transform_operator_to_query_object('exact', other)
+
+    def __gt__(self, other):
+        return self.transform_operator_to_query_object('gt', other)
+
+    def __ge__(self, other):
+        return self.transform_operator_to_query_object('gte', other)
+    
+    def __lt__(self, other):
+        return self.transform_operator_to_query_object('lt', other)
+
+    def __le__(self, other):
+        return self.transform_operator_to_query_object('lte', other)
+
     def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
         constructed_lookup = self.construct_lookup(lookup_type)
         return create_query_object(constructed_lookup, other)
-
-    def __eq__(self, other):
-        return self.transform_operator_to_query_object('exact', other)
 
     def construct_lookup(self, lookup_type):
         return '%s__%s' % (self.name, lookup_type)
