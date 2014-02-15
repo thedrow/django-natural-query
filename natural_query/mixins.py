@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import operator
-from django.db.models import Q
+from django.db.models import Q, Field, F
 from django.db.models.lookups import default_lookups
 
 
@@ -18,6 +18,9 @@ def _mixin(model_or_field_class, *mixins):
 
 class NaturalQueryFieldMixin(object):
     def __eq__(self, other):
+        if isinstance(other, Field):
+            other = F(other.name)
+
         constructed_lookup = self.construct_lookup('exact')
         return Q(**{constructed_lookup: other})
 
