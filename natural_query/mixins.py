@@ -20,8 +20,15 @@ def get_value_or_field(other):
     return other
 
 
+class ExtendedQ(Q):
+    XOR = 'XOR'
+
+    def __xor__(self, other):
+        return self._combine(other, self.XOR)
+
+
 def create_query_object(constructed_lookup, other):
-    return Q(**{constructed_lookup: other})
+    return ExtendedQ(**{constructed_lookup: other})
 
 
 class NaturalQueryFieldMixin(object):

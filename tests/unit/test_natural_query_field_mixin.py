@@ -6,7 +6,7 @@ from django.db.models import Q, F, Field
 from django.test import SimpleTestCase
 from mock import sentinel, patch
 
-from natural_query.mixins import NaturalQueryFieldMixin
+from natural_query.mixins import NaturalQueryFieldMixin, ExtendedQ
 from tests.unit.support import patch_q_objects_equality, patch_f_objects_equality
 
 
@@ -218,6 +218,19 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_can_xor_expressions_when_braces_are_present(self):
+        field1 = NaturalQueryFieldMixin()
+        field1.name = 'field1'
+
+        field2 = NaturalQueryFieldMixin()
+        field2.name = 'field2'
+
+        expected = ExtendedQ(field1__exact=sentinel.VALUE1) ^ ExtendedQ(field2__exact=sentinel.VALUE2)
+
+        actual = (field1 == sentinel.VALUE1) ^ (field2 == sentinel.VALUE2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
     @classmethod
@@ -350,6 +363,20 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         expected = Q(field1__exact=sentinel.VALUE1) | Q(field2__exact=sentinel.VALUE2)
 
         actual = field1 == sentinel.VALUE1 | field2 == sentinel.VALUE2
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
+    def test_cant_xor_expressions_when_braces_are_not_present(self):
+        field1 = NaturalQueryFieldMixin()
+        field1.name = 'field1'
+
+        field2 = NaturalQueryFieldMixin()
+        field2.name = 'field2'
+
+        expected = ExtendedQ(field1__exact=sentinel.VALUE1) ^ ExtendedQ(field2__exact=sentinel.VALUE2)
+
+        actual = field1 == sentinel.VALUE1 ^ field2 == sentinel.VALUE2
 
         self.assertEqual(actual, expected)
 
