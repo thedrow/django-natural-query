@@ -2,11 +2,15 @@
 # -*- coding: utf-8 -*-
 
 
-def _mixin(model_class, *mixins):
-    model_class.__bases__ += mixins
+def _mixin(model_or_field_class, *mixins):
+    model_or_field_class.__bases__ += mixins
 
     for mixin in mixins:
-        mixin.__mixin__(model_class)
+        try:
+            mixin.__mixin__(model_or_field_class)
+        except AttributeError as e:
+            if e.message == "'%s' object has no attribute '__mixin'" % mixin.__name__:
+                pass
 
 
 class NaturalQueryFieldMixin(object):
@@ -18,4 +22,5 @@ class NaturalQueryModelMixin(object):
     def __mixin__(cls, model_class):
         fields = dict(model_class._meta.get_fields_with_model()).keys()
         for field in fields:
+            _mixin(field, NaturalQueryFieldMixin)
             setattr(model_class, field.name, field)
