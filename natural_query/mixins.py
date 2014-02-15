@@ -31,7 +31,7 @@ def create_query_object(constructed_lookup, other):
     return ExtendedQ(**{constructed_lookup: other})
 
 
-class NaturalQueryFieldMixin(object):
+class NaturalQueryBase(object):
     def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
         constructed_lookup = self.construct_lookup(lookup_type)
@@ -58,6 +58,8 @@ class NaturalQueryFieldMixin(object):
     def __ne__(self, other):
         return ~self.transform_operator_to_query_object('exact', other)
 
+
+class NaturalQueryFieldMixin(NaturalQueryBase):
     def __invert__(self):
         return ~Q(self.name)
 
