@@ -157,6 +157,28 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_concated_gte_and_gt_operator_generates_the_right_expression_for_the_greater_than_lookup(self):
+        """
+        This should generate an expression that picks the lower value for comparison.
+        """
+        sut = self.system_under_test
+        expected = Q(field__gt=sentinel.LOWER_VALUE)
+
+        actual = sentinel.HIGHER_VALUE <= sut > sentinel.LOWER_VALUE
+
+        self.assertEqual(actual, expected)
+
+    def test_concated_gt_and_gte_operator_generates_the_right_expression_for_the_greater_than_or_equal_lookup(self):
+        """
+        This should generate an expression that picks the lower value for comparison.
+        """
+        sut = self.system_under_test
+        expected = Q(field__gte=sentinel.LOWER_VALUE)
+
+        actual = sentinel.HIGHER_VALUE < sut >= sentinel.LOWER_VALUE
+
+        self.assertEqual(actual, expected)
+
     def test_negating_generates_the_right_expression_for_the_not_lookup(self):
         sut = self.system_under_test
         expected = ~Q('field')
