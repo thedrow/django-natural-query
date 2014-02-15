@@ -325,4 +325,32 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    @expectedFailure
+    def test_cant_and_expressions_when_braces_are_not_present(self):
+        field1 = NaturalQueryFieldMixin()
+        field1.name = 'field1'
+
+        field2 = NaturalQueryFieldMixin()
+        field2.name = 'field2'
+
+        expected = Q(field1__exact=sentinel.VALUE1, field2__exact=sentinel.VALUE2)
+
+        actual = field1 == sentinel.VALUE1 & field2 == sentinel.VALUE2
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
+    def test_cant_or_expressions_when_braces_are_not_present(self):
+        field1 = NaturalQueryFieldMixin()
+        field1.name = 'field1'
+
+        field2 = NaturalQueryFieldMixin()
+        field2.name = 'field2'
+
+        expected = Q(field1__exact=sentinel.VALUE1) | Q(field2__exact=sentinel.VALUE2)
+
+        actual = field1 == sentinel.VALUE1 | field2 == sentinel.VALUE2
+
+        self.assertEqual(actual, expected)
+
 
