@@ -16,13 +16,22 @@ def _mixin(model_or_field_class, *mixins):
                 pass
 
 
+def get_value_or_field(other):
+    if isinstance(other, Field):
+        other = F(other.name)
+    return other
+
+
+def create_query_object(constructed_lookup, other):
+    return Q(**{constructed_lookup: other})
+
+
 class NaturalQueryFieldMixin(object):
     def __eq__(self, other):
-        if isinstance(other, Field):
-            other = F(other.name)
+        other = get_value_or_field(other)
 
         constructed_lookup = self.construct_lookup('exact')
-        return Q(**{constructed_lookup: other})
+        return create_query_object(constructed_lookup, other)
 
     def construct_lookup(self, lookup_type):
         return '%s__%s' % (self.name, lookup_type)
