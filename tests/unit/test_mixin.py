@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.db.models import Model
 from django.test import SimpleTestCase
+from mock import patch
 from natural_query.mixins import _mixin, NaturalQueryMixin
 
 
@@ -21,9 +22,16 @@ class MixinTestCase(SimpleTestCase):
         self.assertIn(expected, actual)
 
     def test_cannot_add_the_same_mixin_twice(self):
-        expected = NaturalQueryMixin
+        sut = NaturalQueryMixin
 
-        _mixin(Model, expected)
+        _mixin(Model, sut)
 
         with self.assertRaisesMessage(TypeError, 'duplicate base class NaturalQueryMixin'):
-            _mixin(Model, expected)
+            _mixin(Model, sut)
+
+    def test_mixin_special_method_is_called(self):
+        sut = NaturalQueryMixin
+        with patch.object(sut, '__mixin__') as mocked_mixin:
+            _mixin(Model, sut)
+
+        mocked_mixin.assert_called_once_with(Model)
