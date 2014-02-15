@@ -63,7 +63,8 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_greater_than_operator_generates_the_right_expression_for_the_gt_lookup_when_comparing_to_another_field(self):
+    def test_greater_than_operator_generates_the_right_expression_for_the_gt_lookup_when_comparing_to_another_field(
+            self):
         sut = self.system_under_test
         expected = Q(field__gt=F(sentinel.FIELD_NAME))
 
@@ -79,7 +80,9 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_greater_than_or_equal_operator_generates_the_right_expression_for_the_gte_lookup_when_comparing_to_another_field(self):
+    def test_greater_than_or_equal_operator_generates_the_right_expression_for_the_gte_lookup_when_comparing_to_another_field(
+
+            self):
         sut = self.system_under_test
         expected = Q(field__gte=F(sentinel.FIELD_NAME))
 
@@ -111,7 +114,8 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_lte_lookup_when_comparing_to_another_field(self):
+    def test_less_than_or_equal_operator_generates_the_right_expression_for_the_lte_lookup_when_comparing_to_another_field(
+            self):
         sut = self.system_under_test
         expected = Q(field__lte=F(sentinel.FIELD_NAME))
 
@@ -127,7 +131,8 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_not_equal_operator_generates_the_right_negated_expression_for_the_exact_lookup_when_comparing_to_another_field(self):
+    def test_not_equal_operator_generates_the_right_negated_expression_for_the_exact_lookup_when_comparing_to_another_field(
+            self):
         sut = self.system_under_test
         expected = ~Q(field__exact=F(sentinel.FIELD_NAME))
 
@@ -187,6 +192,19 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_can_and_expressions_when_braces_are_present(self):
+        field1 = NaturalQueryFieldMixin()
+        field1.name = 'field1'
+
+        field2 = NaturalQueryFieldMixin()
+        field2.name = 'field2'
+
+        expected = Q(field1__exact=sentinel.VALUE1, field2__exact=sentinel.VALUE2)
+
+        actual = (field1 == sentinel.VALUE1) & (field2 == sentinel.VALUE2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
     @classmethod
@@ -237,7 +255,8 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         self.assertEqual(actual, expected)
 
     @expectedFailure
-    def test_concated_greater_than_or_equal_and_greater_than_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(self):
+    def test_concated_greater_than_or_equal_and_greater_than_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(
+            self):
         sut = self.system_under_test
         expected = Q(field_gt=sentinel.LOWER_VALUE, field_lte=sentinel.HIGHER_VALUE)
 
@@ -246,7 +265,8 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         self.assertEqual(actual, expected)
 
     @expectedFailure
-    def test_concated_greater_than_and_greater_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(self):
+    def test_concated_greater_than_and_greater_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(
+            self):
         sut = self.system_under_test
         expected = Q(field_gte=sentinel.LOWER_VALUE, field_lt=sentinel.HIGHER_VALUE)
 
@@ -273,7 +293,8 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         self.assertEqual(actual, expected)
 
     @expectedFailure
-    def test_concated_lower_than_or_equal_and_lower_than_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(self):
+    def test_concated_lower_than_or_equal_and_lower_than_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(
+            self):
         sut = self.system_under_test
         expected = Q(field_gte=sentinel.LOWER_VALUE, field_lt=sentinel.HIGHER_VALUE)
 
@@ -282,7 +303,8 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         self.assertEqual(actual, expected)
 
     @expectedFailure
-    def test_concated_lower_than_and_lower_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(self):
+    def test_concated_lower_than_and_lower_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(
+            self):
         sut = self.system_under_test
         expected = Q(field_gt=sentinel.LOWER_VALUE, field_lte=sentinel.HIGHER_VALUE)
 

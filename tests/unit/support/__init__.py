@@ -5,6 +5,9 @@ from mock import patch
 
 
 def q_fake_eq(instance, other):
+    if isinstance(other, tuple):
+        return instance.children == other
+
     return instance.children == other.children and instance.connector == other.connector and instance.negated == other.negated
 
 
