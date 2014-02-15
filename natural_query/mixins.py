@@ -9,7 +9,7 @@ def _mixin(model_or_field_class, *mixins):
         try:
             mixin.__mixin__(model_or_field_class)
         except AttributeError as e:
-            if e.message == "'%s' object has no attribute '__mixin'" % mixin.__name__:
+            if str(e) == "'%s' object has no attribute '__mixin'" % mixin.__name__:
                 pass
 
 
