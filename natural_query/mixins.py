@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.db.models import Field, F
+from django.db.models import Field, F, Q
 
 
 def _mixin(model_or_field_class, *mixins):
@@ -20,21 +20,19 @@ def get_value_or_field(other):
     return other
 
 
-def create_query_object(name, constructed_lookup, other):
-    return NaturalQ(name, **{constructed_lookup: other})
+def create_query_object(constructed_lookup, other):
+    return Q(**{constructed_lookup: other})
 
 
-class NaturalQueryBase(object):
+class NaturalQueryFieldMixin(object):
     def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
         constructed_lookup = self.construct_lookup(lookup_type)
-        return create_query_object(self.name, constructed_lookup, other)
+        return create_query_object(constructed_lookup, other)
 
     def construct_lookup(self, lookup_type):
         return '%s__%s' % (self.name, lookup_type)
 
-
-class NaturalQueryFieldMixin(NaturalQueryBase):
     def __eq__(self, other):
         return self.transform_operator_to_query_object('exact', other)
 
