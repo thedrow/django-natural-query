@@ -27,11 +27,13 @@ def create_query_object(constructed_lookup, other):
 
 
 class NaturalQueryFieldMixin(object):
-    def __eq__(self, other):
+    def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
-
-        constructed_lookup = self.construct_lookup('exact')
+        constructed_lookup = self.construct_lookup(lookup_type)
         return create_query_object(constructed_lookup, other)
+
+    def __eq__(self, other):
+        return self.transform_operator_to_query_object('exact', other)
 
     def construct_lookup(self, lookup_type):
         return '%s__%s' % (self.name, lookup_type)
