@@ -207,6 +207,24 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         self.assertEqual(actual, expected)
 
     @expectedFailure
+    def test_concated_greater_than_or_equal_and_greater_than_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(self):
+        sut = self.system_under_test
+        expected = Q(field_gt=sentinel.LOWER_VALUE, field_lte=sentinel.HIGHER_VALUE)
+
+        actual = sentinel.HIGHER_VALUE >= sut > sentinel.LOWER_VALUE
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
+    def test_concated_greater_than_and_greater_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gte_lookup(self):
+        sut = self.system_under_test
+        expected = Q(field_gte=sentinel.LOWER_VALUE, field_lt=sentinel.HIGHER_VALUE)
+
+        actual = sentinel.HIGHER_VALUE > sut >= sentinel.LOWER_VALUE
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
     def test_concated_lower_than_or_equals_operator_generates_the_wrong_expression_for_the_range_lookup(self):
         sut = self.system_under_test
         expected = Q(field__range=[sentinel.LOWER_VALUE, sentinel.HIGHER_VALUE])
@@ -221,6 +239,24 @@ class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):
         expected = Q(field_gt=sentinel.LOWER_VALUE, field_lt=sentinel.HIGHER_VALUE)
 
         actual = sentinel.LOWER_VALUE < sut < sentinel.HIGHER_VALUE
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
+    def test_concated_lower_than_or_equal_and_lower_than_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(self):
+        sut = self.system_under_test
+        expected = Q(field_gte=sentinel.LOWER_VALUE, field_lt=sentinel.HIGHER_VALUE)
+
+        actual = sentinel.LOWER_VALUE <= sut < sentinel.HIGHER_VALUE
+
+        self.assertEqual(actual, expected)
+
+    @expectedFailure
+    def test_concated_lower_than_and_lower_than_or_equal_operator_generates_the_wrong_expression_for_the_lt_and_gt_lookup(self):
+        sut = self.system_under_test
+        expected = Q(field_gt=sentinel.LOWER_VALUE, field_lte=sentinel.HIGHER_VALUE)
+
+        actual = sentinel.LOWER_VALUE < sut <= sentinel.HIGHER_VALUE
 
         self.assertEqual(actual, expected)
 
