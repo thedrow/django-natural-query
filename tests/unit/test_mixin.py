@@ -37,11 +37,11 @@ class MixinTestCase(SimpleTestCase):
     def test_cannot_add_the_same_mixin_twice(self):
         sut = NaturalQueryModelMixin
 
-        with patch.object(sut, '__mixin__'):
+        with patch.object(sut, '__mixin__') as mocked_mixin:
+            _mixin(Model, sut)
             _mixin(Model, sut)
 
-        with self.assertRaisesMessage(TypeError, 'duplicate base class NaturalQueryModelMixin'):
-            _mixin(Model, sut)
+        mocked_mixin.assert_called_once_with(Model)
 
     def test_mixin_special_method_is_called(self):
         sut = NaturalQueryModelMixin

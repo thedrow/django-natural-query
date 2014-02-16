@@ -4,9 +4,14 @@ from django.db.models import Field, F, Q
 
 
 def _mixin(model_or_field_class, *mixins):
-    model_or_field_class.__bases__ += mixins
-
+    m = []
     for mixin in mixins:
+        if mixin not in model_or_field_class.__bases__:
+            m.append(mixin)
+
+    model_or_field_class.__bases__ += tuple(m)
+
+    for mixin in m:
         try:
             mixin.__mixin__(model_or_field_class)
         except AttributeError as e:
