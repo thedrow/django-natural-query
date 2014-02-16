@@ -1,22 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.db.models import Field, F, Q
+
+from django.db.models import Field, F
+from django.db.models.base import ModelBase
+from django.db.models.fields.related import RelatedField
+from django.db.models.query import Q
 
 
 def _mixin(model_or_field_class, *mixins):
     m = []
-    for mixin in mixins:
-        if mixin not in model_or_field_class.__bases__:
-            m.append(mixin)
 
-    model_or_field_class.__bases__ += tuple(m)
+    if isinstance(model_or_field_class, ModelBase):
+        for mixin in mixins:
+            if mixin not in model_or_field_class.__bases__:
+                m.append(mixin)
+
+        model_or_field_class.__bases__ += tuple(m)
+    elif isinstance(model_or_field_class, Field):
+        for mixin in mixins:
+            if not isinstance(model_or_field_class, mixin) and Field in model_or_field_class.__class__.__bases__:
+                m.append(mixin)
+
+        model_or_field_class.__class__.__bases__ = tuple(m) + model_or_field_class.__class__.__bases__
 
     for mixin in m:
-        try:
-            mixin.__mixin__(model_or_field_class)
-        except AttributeError as e:
-            if str(e) == "'%s' object has no attribute '__mixin'" % mixin.__name__:
-                pass
+        mixin.__mixin__(model_or_field_class)
 
 
 def get_value_or_field(other):
@@ -43,7 +51,7 @@ def create_query_object(constructed_lookup, other):
     return ExtendedQ(**{constructed_lookup: other})
 
 
-class NaturalQueryBase(object):
+class NaturalQueryBase():
     def transform_operator_to_query_object(self, lookup_type, other):
         other = get_value_or_field(other)
         constructed_lookup = self.construct_lookup(lookup_type)
@@ -93,6 +101,10 @@ class NaturalQueryFieldMixin(NaturalQueryBase):
     def __mod__(self, other):
         return F(self.name) % other
 
+    @classmethod
+    def __mixin__(cls, field_class):
+        pass
+
 
 class NaturalQueryModelMixin(object):
     @classmethod
@@ -100,4 +112,5 @@ class NaturalQueryModelMixin(object):
         fields = dict(model_class._meta.get_fields_with_model()).keys()
         for field in fields:
             _mixin(field, NaturalQueryFieldMixin)
-            setattr(model_class, field.name, field)
+            if not isinstance(field, RelatedField):
+                setattr(model_class, field.name, field)
