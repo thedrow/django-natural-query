@@ -7,7 +7,8 @@ from django.test import SimpleTestCase
 from mock import sentinel, patch
 
 from natural_query.mixins import NaturalQueryFieldMixin, ExtendedQ
-from tests.unit.support import patch_q_objects_equality, patch_f_objects_equality
+from tests.unit.support import patch_q_objects_equality, patch_f_objects_equality, \
+    patch_expression_node_objects_equality
 
 
 class NaturalQueryFieldMixinTestCase(SimpleTestCase):
@@ -15,6 +16,7 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
     def setUpClass(cls):
         patch_q_objects_equality()
         patch_f_objects_equality()
+        patch_expression_node_objects_equality()
 
     @classmethod
     def tearDownClass(cls):
@@ -230,6 +232,54 @@ class NaturalQueryFieldMixinTestCase(SimpleTestCase):
         actual = (field1 == sentinel.VALUE1) ^ (field2 == sentinel.VALUE2)
 
         self.assertEqual(actual, expected)
+
+    def test_can_add_to_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=F('field') + sentinel.VALUE)
+
+        actual = sut == sut + sentinel.VALUE
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+
+    def test_can_substract_from_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=F('field') - sentinel.VALUE)
+
+        actual = sut == sut - sentinel.VALUE
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+
+    def test_can_multiply_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=F('field') * sentinel.VALUE)
+
+        actual = sut == sut * sentinel.VALUE
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+
+    def test_can_divide_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=F('field') / sentinel.VALUE)
+
+        actual = sut == sut / sentinel.VALUE
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+
+    def test_can_raise_to_power_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=pow(F('field'), sentinel.VALUE))
+
+        actual = sut == pow(F('field'), sentinel.VALUE)
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+
+    def test_can_mod_field_and_compare(self):
+        sut = self.system_under_test
+        expected = ExtendedQ(field=F('field') % sentinel.VALUE)
+
+        actual = sut == sut % sentinel.VALUE
+
+        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
 
 
 class NaturalQueryFieldMixinUnsupportedOperationsTestCase(SimpleTestCase):

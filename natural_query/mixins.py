@@ -26,6 +26,13 @@ class ExtendedQ(Q):
     def __xor__(self, other):
         return self._combine(other, self.XOR)
 
+    def __str__(self):
+        if self.negated:
+            return '(NOT (%s: %s))' % (self.connector, ', '.join(['%s, %s' % (str(c[0]), str(c[1])) for c in
+                                                                  self.children]))
+        return '(%s: %s)' % (self.connector, ', '.join(['%s, %s' % (str(c[0]), str(c[1])) for c in
+                                                        self.children]))
+
 
 def create_query_object(constructed_lookup, other):
     return ExtendedQ(**{constructed_lookup: other})
@@ -61,7 +68,25 @@ class NaturalQueryBase(object):
 
 class NaturalQueryFieldMixin(NaturalQueryBase):
     def __invert__(self):
-        return ~Q(self.name)
+        return ~ExtendedQ(self.name)
+
+    def __add__(self, other):
+        return F(self.name) + other
+
+    def __sub__(self, other):
+        return F(self.name) - other
+
+    def __mul__(self, other):
+        return F(self.name) * other
+
+    def __div__(self, other):
+        return F(self.name) / other
+
+    def __pow__(self, power, modulo=None):
+        return pow(F(self.name), power, modulo)
+
+    def __mod__(self, other):
+        return F(self.name) % other
 
 
 class NaturalQueryModelMixin(object):
