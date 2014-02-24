@@ -2,6 +2,14 @@
 django-natural-query
 ====================
 
+.. image:: https://travis-ci.org/thedrow/django-natural-query.png?branch=master
+    :target: https://travis-ci.org/thedrow/django-natural-query.png?branch=master
+    :alt: Build Status
+
+.. image:: https://coveralls.io/repos/thedrow/django-natural-query/badge.png?branch=master
+    :target: https://coveralls.io/repos/thedrow/django-natural-query/badge.png?branch=master
+    :alt: Coverage Status
+
 Natural queries using objects and operators for Django.
 
 **Supported Django versions**: 1.7a2 and above
