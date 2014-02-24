@@ -1,2 +1,1 @@
-https://www.djangoproject.com/download/1.7a2/tarball/
-six==1.5.2
+-r ./requirements/common.txt

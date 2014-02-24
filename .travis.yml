@@ -1,0 +1,24 @@
+language: python
+
+python:
+  - "3.3"
+  - "3.2"
+  - "2.7"
+  - "2.6"
+  - "pypy"
+
+env:
+- TESTSUITE=unit
+- TESTSUITE=functional
+- TESTSUITE=smoke
+
+install:
+- pip install -r requirements/development.txt
+- pip install coveralls
+
+script:
+- "coverage run python manage.py test -v 1 tests.$TESTSUITE"
+- coverage report --fail-under 80
+
+after_success:
+  - coveralls

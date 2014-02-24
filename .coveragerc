@@ -1,0 +1,8 @@
+[run]
+branch = True
+source = natural_query
+include = natural_query/*
+omit = natural_query/*/tests/*
+       natural_query/tests/*
+       test_*.*
+       __init__.py
