@@ -419,6 +419,44 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_regex_generates_the_right_expression_for_the_regex_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__regex=sentinel.VALUE)
+
+        actual = sut.regex(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_regex_generates_the_right_expression_for_the_regex_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__regex=F('field2'))
+
+        actual = field1.regex(field2)
+
+        self.assertEqual(actual, expected)
+
+    def test_iregex_generates_the_right_expression_for_the_iregex_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__iregex=sentinel.VALUE)
+
+        actual = sut.iregex(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_iregex_generates_the_right_expression_for_the_iregex_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__iregex=F('field2'))
+
+        actual = field1.iregex(field2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
     @property

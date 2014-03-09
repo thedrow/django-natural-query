@@ -100,3 +100,9 @@ class NaturalQueryDescriptor(object):
 
     def search(self, other):
         return self._transform_operator_to_query_object('search', other)
+    
+    def regex(self, other):
+        return self._transform_operator_to_query_object('regex', other)
+
+    def iregex(self, other):
+        return self._transform_operator_to_query_object('iregex', other)
