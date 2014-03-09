@@ -362,6 +362,44 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_endswith_generates_the_right_expression_for_the_endswith_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__endswith=sentinel.VALUE)
+
+        actual = sut.endswith(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_endswith_generates_the_right_expression_for_the_endswith_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__endswith=F('field2'))
+
+        actual = field1.endswith(field2)
+
+        self.assertEqual(actual, expected)
+        
+    def test_iendswith_generates_the_right_expression_for_the_iendswith_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__iendswith=sentinel.VALUE)
+
+        actual = sut.iendswith(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_iendswith_generates_the_right_expression_for_the_iendswith_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__iendswith=F('field2'))
+
+        actual = field1.iendswith(field2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
     @property
