@@ -304,6 +304,25 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.contains(field2)
 
         self.assertEqual(actual, expected)
+        
+    def test_icontains_generates_the_right_expression_for_the_icontains_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__icontains=sentinel.VALUE)
+
+        actual = sut.icontains(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_icontains_generates_the_right_expression_for_the_icontains_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__icontains=F('field2'))
+
+        actual = field1.icontains(field2)
+
+        self.assertEqual(actual, expected)
 
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):

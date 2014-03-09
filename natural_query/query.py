@@ -82,3 +82,6 @@ class NaturalQueryDescriptor(object):
 
     def contains(self, other):
         return self._transform_operator_to_query_object('contains', other)
+
+    def icontains(self, other):
+        return self._transform_operator_to_query_object('icontains', other)
