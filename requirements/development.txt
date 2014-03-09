@@ -1,3 +1,4 @@
 -r ./common.txt
 
 coverage>=3.6
+mock>=1.0.1
