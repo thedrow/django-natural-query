@@ -79,3 +79,6 @@ class NaturalQueryDescriptor(object):
 
     def iexact(self, other):
         return self._transform_operator_to_query_object('iexact', other)
+
+    def contains(self, other):
+        return self._transform_operator_to_query_object('contains', other)
