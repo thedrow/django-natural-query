@@ -90,4 +90,4 @@ class NaturalQueryDescriptor(object):
         return self._transform_operator_to_query_object('startswith', other)
 
     def istartswith(self, other):
-        return self._transform_operator_to_query_object('startswith', other)
+        return self._transform_operator_to_query_object('istartswith', other)
