@@ -17,7 +17,7 @@ install:
 
 script:
 - "coverage run manage.py test -v 1 tests.$TESTSUITE"
-- coverage report --fail-under 80
+- coverage report
 
 after_success:
   - coveralls
