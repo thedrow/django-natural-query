@@ -1,8 +1,8 @@
-from unittest import expectedFailure
-from django.db.models import Q, Field, F
+from django.db.models import Q, F
 from django.test import SimpleTestCase
 from mock import sentinel
-from natural_query.query import DateNaturalQueryDescriptor, DateNaturalQueryDescriptor
+
+from natural_query.query import DateNaturalQueryDescriptor
 from tests.common.support import assertQObjectsEqual
 
 
@@ -602,7 +602,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_and_expressions_when_braces_are_present(self):
+    def test_can_and_expressions_referring_to_year_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -612,7 +612,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_or_expressions_when_braces_are_present(self):
+    def test_can_or_expressions_referring_to_year_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -622,7 +622,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_to_field_and_compare(self):
+    def test_can_add_to_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=F('field__month') + sentinel.VALUE)
 
@@ -630,7 +630,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_from_field_and_compare(self):
+    def test_can_substract_from_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=F('field__month') - sentinel.VALUE)
 
@@ -638,7 +638,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_multiply_field_and_compare(self):
+    def test_can_multiply_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=F('field__month') * sentinel.VALUE)
 
@@ -646,7 +646,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_divide_field_and_compare(self):
+    def test_can_divide_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=F('field__month') / sentinel.VALUE)
 
@@ -654,7 +654,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_raise_to_power_field_and_compare(self):
+    def test_can_raise_to_power_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=pow(F('field__month'), sentinel.VALUE))
 
@@ -662,7 +662,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_mod_field_and_compare(self):
+    def test_can_mod_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=F('field__month') % sentinel.VALUE)
 
@@ -670,7 +670,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_value_to_field_and_compare(self):
+    def test_can_add_value_to_field_year_and_compare(self):
         sut = self.system_under_test
 
         # For some reason this test fails with a sentinel. I used a real value instead.
@@ -680,7 +680,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_value_from_field_and_compare(self):
+    def test_can_substract_value_from_field_year_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__month__exact=sentinel.VALUE - F('field'))
 
@@ -1031,7 +1031,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_and_expressions_when_braces_are_present(self):
+    def test_can_and_expressions_referring_to_day_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -1041,7 +1041,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_or_expressions_when_braces_are_present(self):
+    def test_can_or_expressions_referring_to_day_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -1051,7 +1051,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_to_field_and_compare(self):
+    def test_can_add_to_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=F('field__day') + sentinel.VALUE)
 
@@ -1059,7 +1059,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_from_field_and_compare(self):
+    def test_can_substract_from_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=F('field__day') - sentinel.VALUE)
 
@@ -1067,7 +1067,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_multiply_field_and_compare(self):
+    def test_can_multiply_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=F('field__day') * sentinel.VALUE)
 
@@ -1075,7 +1075,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_divide_field_and_compare(self):
+    def test_can_divide_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=F('field__day') / sentinel.VALUE)
 
@@ -1083,7 +1083,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_raise_to_power_field_and_compare(self):
+    def test_can_raise_to_power_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=pow(F('field__day'), sentinel.VALUE))
 
@@ -1091,7 +1091,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_mod_field_and_compare(self):
+    def test_can_mod_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=F('field__day') % sentinel.VALUE)
 
@@ -1099,7 +1099,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_value_to_field_and_compare(self):
+    def test_can_add_value_to_field_day_and_compare(self):
         sut = self.system_under_test
 
         # For some reason this test fails with a sentinel. I used a real value instead.
@@ -1109,7 +1109,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_value_from_field_and_compare(self):
+    def test_can_substract_value_from_field_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__day__exact=sentinel.VALUE - F('field'))
 
@@ -1460,7 +1460,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_and_expressions_when_braces_are_present(self):
+    def test_can_and_expressions_referring_to_week_day_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -1470,7 +1470,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_or_expressions_when_braces_are_present(self):
+    def test_can_or_expressions_referring_to_week_day_when_braces_are_present(self):
         field1 = DateNaturalQueryDescriptor('field1')
         field2 = DateNaturalQueryDescriptor('field2')
 
@@ -1480,7 +1480,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_to_field_and_compare(self):
+    def test_can_add_to_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=F('field__week_day') + sentinel.VALUE)
 
@@ -1488,7 +1488,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_from_field_and_compare(self):
+    def test_can_substract_from_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=F('field__week_day') - sentinel.VALUE)
 
@@ -1496,7 +1496,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_multiply_field_and_compare(self):
+    def test_can_multiply_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=F('field__week_day') * sentinel.VALUE)
 
@@ -1504,7 +1504,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_divide_field_and_compare(self):
+    def test_can_divide_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=F('field__week_day') / sentinel.VALUE)
 
@@ -1512,7 +1512,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_raise_to_power_field_and_compare(self):
+    def test_can_raise_to_power_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=pow(F('field__week_day'), sentinel.VALUE))
 
@@ -1520,7 +1520,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_mod_field_and_compare(self):
+    def test_can_mod_field_week_day_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=F('field__week_day') % sentinel.VALUE)
 
@@ -1528,7 +1528,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_add_value_to_field_and_compare(self):
+    def test_can_add_week_day_value_to_field_and_compare(self):
         sut = self.system_under_test
 
         # For some reason this test fails with a sentinel. I used a real value instead.
@@ -1538,7 +1538,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
-    def test_can_substract_value_from_field_and_compare(self):
+    def test_can_substract_week_day_value_from_field_and_compare(self):
         sut = self.system_under_test
         expected = Q(field__week_day__exact=sentinel.VALUE - F('field'))
 
