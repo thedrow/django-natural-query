@@ -18,7 +18,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
     @property
     def field(self):
-        return Field(name=sentinel.FIELD_NAME)
+        return NaturalQueryDescriptor(name=sentinel.FIELD_NAME)
 
     def test_equals_operator_generates_the_right_expression_for_the_exact_lookup(self):
         sut = self.system_under_test
@@ -207,7 +207,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sut + sentinel.VALUE
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_substract_from_field_and_compare(self):
         sut = self.system_under_test
@@ -215,7 +215,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sut - sentinel.VALUE
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_multiply_field_and_compare(self):
         sut = self.system_under_test
@@ -223,7 +223,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sut * sentinel.VALUE
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_divide_field_and_compare(self):
         sut = self.system_under_test
@@ -231,7 +231,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sut / sentinel.VALUE
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_raise_to_power_field_and_compare(self):
         sut = self.system_under_test
@@ -239,7 +239,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == pow(F('field'), sentinel.VALUE)
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_mod_field_and_compare(self):
         sut = self.system_under_test
@@ -247,7 +247,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sut % sentinel.VALUE
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_add_value_to_field_and_compare(self):
         sut = self.system_under_test
@@ -257,7 +257,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == 1 + sut
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
 
     def test_can_substract_value_from_field_and_compare(self):
         sut = self.system_under_test
@@ -265,7 +265,26 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         actual = sut == sentinel.VALUE - sut
 
-        self.assertEqual(actual, expected, '%s is not the same as %s' % (actual, expected))
+        self.assertEqual(actual, expected)
+
+    def test_iexact_generates_the_right_expression_for_the_iexact_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__iexact=sentinel.VALUE)
+
+        actual = sut.iexact(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_iexact_generates_the_right_expression_for_the_iexact_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__iexact=F('field2'))
+
+        actual = field1.iexact(field2)
+
+        self.assertEqual(actual, expected)
 
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):

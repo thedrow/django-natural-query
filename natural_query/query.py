@@ -2,7 +2,7 @@ from django.db.models import Field, F, Q
 
 
 def _get_value_or_field(other):
-    if isinstance(other, Field):
+    if isinstance(other, NaturalQueryDescriptor):
         other = F(other.name)
     return other
 
@@ -76,3 +76,6 @@ class NaturalQueryDescriptor(object):
 
     def __rmod__(self, other):
         return other % F(self.name)
+
+    def iexact(self, other):
+        return self._transform_operator_to_query_object('iexact', other)
