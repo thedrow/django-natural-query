@@ -97,3 +97,6 @@ class NaturalQueryDescriptor(object):
 
     def iendswith(self, other):
         return self._transform_operator_to_query_object('iendswith', other)
+
+    def search(self, other):
+        return self._transform_operator_to_query_object('search', other)

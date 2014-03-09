@@ -399,6 +399,25 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.iendswith(field2)
 
         self.assertEqual(actual, expected)
+        
+    def test_search_generates_the_right_expression_for_the_search_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__search=sentinel.VALUE)
+
+        actual = sut.search(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_search_generates_the_right_expression_for_the_search_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__search=F('field2'))
+
+        actual = field1.search(field2)
+
+        self.assertEqual(actual, expected)
 
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
