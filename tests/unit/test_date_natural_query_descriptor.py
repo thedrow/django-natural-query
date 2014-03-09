@@ -6,7 +6,7 @@ from natural_query.query import DateNaturalQueryDescriptor
 from tests.common.support import assertQObjectsEqual
 
 
-class NaturalQueryDescriptorTestCase(SimpleTestCase):
+class DateNaturalQueryDescriptorTestCase(SimpleTestCase):
     def setUp(self):
         self.addTypeEqualityFunc(Q, assertQObjectsEqual)
 
