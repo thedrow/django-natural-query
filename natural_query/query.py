@@ -100,9 +100,44 @@ class NaturalQueryDescriptor(object):
 
     def search(self, other):
         return self._transform_operator_to_query_object('search', other)
-    
+
     def regex(self, other):
         return self._transform_operator_to_query_object('regex', other)
 
     def iregex(self, other):
         return self._transform_operator_to_query_object('iregex', other)
+
+
+class DateNaturalQueryDescriptor(NaturalQueryDescriptor):
+    def _construct_natural_query_descriptor_for_date_part(self, date_part):
+        return NaturalQueryDescriptor('%s__%s' % (self.name, date_part))
+
+    @property
+    def year(self):
+        return self._construct_natural_query_descriptor_for_date_part('year')
+
+    @property
+    def month(self):
+        return self._construct_natural_query_descriptor_for_date_part('month')
+
+    @property
+    def day(self):
+        return self._construct_natural_query_descriptor_for_date_part('day')
+
+    @property
+    def week_day(self):
+        return self._construct_natural_query_descriptor_for_date_part('week_day')
+
+
+class DateTimeNaturalQueryDescriptor(DateNaturalQueryDescriptor):
+    @property
+    def hour(self):
+        return self._construct_natural_query_descriptor_for_date_part('hour')
+    
+    @property
+    def minute(self):
+        return self._construct_natural_query_descriptor_for_date_part('minute')
+
+    @property
+    def second(self):
+        return self._construct_natural_query_descriptor_for_date_part('second')

@@ -1,6 +1,6 @@
-from django.db.models import Field
+from django.db.models import Field, DateField, DateTimeField
 
-from natural_query.query import NaturalQueryDescriptor
+from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor
 
 
 class NaturalQueryField(Field):
@@ -11,3 +11,11 @@ class NaturalQueryField(Field):
 
         if not hasattr(cls, name):
             setattr(cls, name, self.query_descriptor(name))
+
+
+class DateNaturalQueryField(DateField, NaturalQueryField):
+    query_descriptor = DateNaturalQueryDescriptor
+
+
+class DateTimeNaturalQueryField(DateTimeField, NaturalQueryField):
+    query_descriptor = DateTimeNaturalQueryDescriptor
