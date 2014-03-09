@@ -85,3 +85,6 @@ class NaturalQueryDescriptor(object):
 
     def icontains(self, other):
         return self._transform_operator_to_query_object('icontains', other)
+
+    def startswith(self, other):
+        return self._transform_operator_to_query_object('startswith', other)

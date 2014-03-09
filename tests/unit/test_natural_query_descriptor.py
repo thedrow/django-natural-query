@@ -323,6 +323,25 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.icontains(field2)
 
         self.assertEqual(actual, expected)
+        
+    def test_startswith_generates_the_right_expression_for_the_startswith_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__startswith=sentinel.VALUE)
+
+        actual = sut.startswith(sentinel.VALUE)
+
+        self.assertEqual(actual, expected)
+
+    def test_startswith_generates_the_right_expression_for_the_startswith_lookup_when_comparing_to_a_field(self):
+        field1 = NaturalQueryDescriptor('field1')
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field1__startswith=F('field2'))
+
+        actual = field1.startswith(field2)
+
+        self.assertEqual(actual, expected)
 
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
