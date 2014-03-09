@@ -17,7 +17,7 @@ install:
 - pip install coveralls
 
 script:
-- "coverage run python manage.py test -v 1 tests.$TESTSUITE"
+- "coverage run manage.py test -v 1 tests.$TESTSUITE"
 - coverage report --fail-under 80
 
 after_success:
