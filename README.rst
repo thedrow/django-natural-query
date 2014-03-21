@@ -15,7 +15,7 @@ Natural queries using objects and operators for Django.
 **Supported Django versions**: 1.7a2 and above
 
 .. warning::
-    This project is currently not production ready and uses the alpha version of Django 1.7.
+    This project is currently not production ready and uses the beta version of Django 1.7.
     Once Django 1.7 is released this project will stabilize.
 
 Overview
