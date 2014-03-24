@@ -1585,7 +1585,7 @@ class DateNaturalQueryDescriptorTestCase(SimpleTestCase):
 
         expected = Q(field1__week_day=sentinel.VALUE1, field2__week_day=sentinel.VALUE2)
 
-        actual = (field1.week_day == sentinel.VALUE1) & (field2.week_day == sentinel.VALUE2)
+        actual = (field2.week_day == sentinel.VALUE2) & (field1.week_day == sentinel.VALUE1)
 
         self.assertEqual(actual, expected)
 
