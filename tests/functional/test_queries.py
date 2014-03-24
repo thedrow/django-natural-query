@@ -42,3 +42,9 @@ class QueriesTestCase(TransactionTestCase):
         actual = TestModel.objects.filter((TestModel.foo > 1) & (TestModel.bar == 1))
 
         self.assertEqual(list(actual), list(expected))
+
+    def test_can_fetch_records_with_foo_greater_than_one_or_bar_equal_to_one(self):
+        expected = TestModel.objects.filter(Q(foo__gt=1) | Q(bar=1))
+        actual = TestModel.objects.filter((TestModel.foo > 1) | (TestModel.bar == 1))
+
+        self.assertEqual(list(actual), list(expected))
