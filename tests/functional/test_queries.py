@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.db.models import F
+from datetime import datetime
+from django.db.models import F, Q
 from django.test import TransactionTestCase
 
 from tests.common.support.models import TestModel
@@ -33,5 +34,11 @@ class QueriesTestCase(TransactionTestCase):
     def test_can_fetch_records_greater_or_equal_to_bar_plus_one(self):
         expected = TestModel.objects.filter(foo__gte=F('bar') + 1)
         actual = TestModel.objects.filter(TestModel.foo >= TestModel.bar + 1)
+
+        self.assertEqual(list(actual), list(expected))
+
+    def test_can_fetch_records_with_foo_greater_than_one_and_bar_equal_to_one(self):
+        expected = TestModel.objects.filter(foo__gt=1, bar=1)
+        actual = TestModel.objects.filter((TestModel.foo > 1) & (TestModel.bar == 1))
 
         self.assertEqual(list(actual), list(expected))
