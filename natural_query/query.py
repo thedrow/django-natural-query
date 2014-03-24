@@ -115,6 +115,9 @@ class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def in_values(self, *args):
         return self._transform_operator_to_query_object('in', args)
 
+    def between(self, low, high):
+        return self._transform_operator_to_query_object('range', (low, high))
+
 
 class DatePartNaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def __init__(self, name, date_part):

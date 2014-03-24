@@ -476,6 +476,25 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_between_generates_the_right_expression_for_the_range_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__range=(sentinel.VALUE1, sentinel.VALUE2))
+
+        actual = sut.between(sentinel.VALUE1, sentinel.VALUE2)
+
+        self.assertEqual(actual, expected)
+
+    def test_between_generates_the_right_expression_for_the_range_lookup_when_comparing_to_a_field(self):
+        sut = self.system_under_test
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field__range=(sentinel.VALUE, F('field2')))
+
+        actual = sut.between(sentinel.VALUE, field2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
     @property
