@@ -1,4 +1,4 @@
-from django.db.models import Field, F, Q
+from django.db.models import F, Q
 
 
 def _get_value_or_field(other):
@@ -11,7 +11,7 @@ def create_query_object(constructed_lookup, other):
     return Q(**{constructed_lookup: other})
 
 
-class NaturalQueryDescriptor(object):
+class NaturalQueryDescriptorBase(object):
     def __init__(self, name):
         self.name = name
 
@@ -23,6 +23,8 @@ class NaturalQueryDescriptor(object):
     def _construct_lookup(self, lookup_type):
         return '%s__%s' % (self.name, lookup_type)
 
+
+class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def __eq__(self, other):
         return self._transform_operator_to_query_object('exact', other)
 
@@ -111,9 +113,58 @@ class NaturalQueryDescriptor(object):
         return self._transform_operator_to_query_object('iregex', other)
 
 
+class DatePartNaturalQueryDescriptor(NaturalQueryDescriptorBase):
+    def __init__(self, name, date_part):
+        super(DatePartNaturalQueryDescriptor, self).__init__(name)
+
+        self.date_part = date_part
+
+    def __eq__(self, other):
+        return self._transform_operator_to_query_object(self.date_part, other)
+
+    def __ne__(self, other):
+        return ~self._transform_operator_to_query_object(self.date_part, other)
+
+    def __add__(self, other):
+        return F(self._construct_lookup(self.date_part)) + other
+
+    def __sub__(self, other):
+        return F(self._construct_lookup(self.date_part)) - other
+
+    def __mul__(self, other):
+        return F(self._construct_lookup(self.date_part)) * other
+
+    def __div__(self, other):
+        return F(self._construct_lookup(self.date_part)) / other
+
+    def __truediv__(self, other):
+        return F(self._construct_lookup(self.date_part)) / other
+
+    def __radd__(self, other):
+        return F(self._construct_lookup(self.date_part)) + other
+
+    def __rsub__(self, other):
+        return other - F(self._construct_lookup(self.date_part))
+
+    def __rmul__(self, other):
+        return F(self._construct_lookup(self.date_part)) * other
+
+    def __rdiv__(self, other):
+        return other / F(self._construct_lookup(self.date_part))
+
+    def __pow__(self, power, modulo=None):
+        return pow(F(self._construct_lookup(self.date_part)), power, modulo)
+
+    def __mod__(self, other):
+        return F(self._construct_lookup(self.date_part)) % other
+
+    def __rmod__(self, other):
+        return other % F(self._construct_lookup(self.date_part))
+
+
 class DateNaturalQueryDescriptor(NaturalQueryDescriptor):
     def _construct_natural_query_descriptor_for_date_part(self, date_part):
-        return NaturalQueryDescriptor('%s__%s' % (self.name, date_part))
+        return DatePartNaturalQueryDescriptor(self.name, date_part)
 
     @property
     def year(self):
@@ -136,7 +187,7 @@ class DateTimeNaturalQueryDescriptor(DateNaturalQueryDescriptor):
     @property
     def hour(self):
         return self._construct_natural_query_descriptor_for_date_part('hour')
-    
+
     @property
     def minute(self):
         return self._construct_natural_query_descriptor_for_date_part('minute')

@@ -4,7 +4,8 @@ from mock import patch
 
 
 def _compare_expression_nodes(s, other):
-    return s.connector == other.connector and s.children == other.children and s.negated == other.negated
+    return s.connector == other.connector and sorted(s.children) == sorted(
+        other.children) and s.negated == other.negated
 
 
 def _compare_f_objects(s, other):
@@ -14,7 +15,7 @@ def _compare_f_objects(s, other):
 def _compare_children(first, second):
     with patch.object(F, '__eq__', new=_compare_f_objects), patch.object(ExpressionNode, '__eq__',
                                                                          new=_compare_expression_nodes):
-        return first.children == second.children
+        return sorted(first.children) == sorted(second.children)
 
 
 def assertQObjectsEqual(first, second, msg=None):
