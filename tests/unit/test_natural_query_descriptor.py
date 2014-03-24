@@ -457,6 +457,25 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_in_generates_the_right_expression_for_the_in_lookup(self):
+        sut = self.system_under_test
+
+        expected = Q(field__in=(sentinel.VALUE1, sentinel.VALUE2))
+
+        actual = sut.in_values(sentinel.VALUE1, sentinel.VALUE2)
+
+        self.assertEqual(actual, expected)
+
+    def test_in_generates_the_right_expression_for_the_in_lookup_when_comparing_to_a_field(self):
+        sut = self.system_under_test
+        field2 = NaturalQueryDescriptor('field2')
+
+        expected = Q(field__in=(sentinel.VALUE, F('field2')))
+
+        actual = sut.in_values(sentinel.VALUE, field2)
+
+        self.assertEqual(actual, expected)
+
 
 class NaturalQueryDescriptorUnsupportedOperationsTestCase(SimpleTestCase):
     @property

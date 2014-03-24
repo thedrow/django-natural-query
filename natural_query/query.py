@@ -112,6 +112,9 @@ class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def iregex(self, other):
         return self._transform_operator_to_query_object('iregex', other)
 
+    def in_values(self, *args):
+        return self._transform_operator_to_query_object('in', args)
+
 
 class DatePartNaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def __init__(self, name, date_part):
