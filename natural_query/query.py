@@ -56,6 +56,9 @@ class NaturalQueryDescriptor(object):
     def __div__(self, other):
         return F(self.name) / other
 
+    def __truediv__(self, other):
+        return F(self.name) / other
+
     def __radd__(self, other):
         return F(self.name) + other
 
