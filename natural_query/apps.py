@@ -4,7 +4,8 @@ from django.apps import AppConfig, apps
 import itertools
 from django.db.models import DateField, DateTimeField
 from natural_query.fields import NaturalQueryField
-from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor
+from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor, \
+    PrimaryKeyNaturalQueryDescriptor
 
 
 class NaturalQueryConfig(AppConfig):
@@ -18,6 +19,9 @@ class NaturalQueryConfig(AppConfig):
         models = itertools.chain.from_iterable(app_config.get_models() for app_config in app_configs)
 
         for model in models:
+            if not isinstance(model.pk, PrimaryKeyNaturalQueryDescriptor):
+                model.pk = PrimaryKeyNaturalQueryDescriptor()
+
             non_natural_fields = [field for field in model._meta.fields if
                                   not isinstance(field, NaturalQueryField)]
 

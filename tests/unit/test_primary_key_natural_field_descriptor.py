@@ -17,10 +17,6 @@ class NaturalQueryFieldTestCase(SimpleTestCase):
 
         mocked_get_pk_val.assert_called_once_with()
 
-    def test_cant_set_query_descriptor_from_model_type(self):
-        with self.assertRaisesMessage(TypeError, 'Cannot set query descriptor.'):
-            TestModel.pk = sentinel.PK
-
     def test_can_set_pk_from_model_instance(self):
         with patch.object(TestModel, '_set_pk_val') as mocked_set_pk_val:
             sut = TestModel()

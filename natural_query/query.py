@@ -119,6 +119,20 @@ class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
         return self._transform_operator_to_query_object('range', (low, high))
 
 
+class PrimaryKeyNaturalQueryDescriptor(NaturalQueryDescriptor):
+    def __init__(self):
+        super(PrimaryKeyNaturalQueryDescriptor, self).__init__('pk')
+
+    def __get__(self, instance, owner):
+        if not instance:
+            return self
+
+        return instance._get_pk_val()
+
+    def __set__(self, instance, value):
+        return instance._set_pk_val(value)
+
+
 class DatePartNaturalQueryDescriptor(NaturalQueryDescriptorBase):
     def __init__(self, name, date_part):
         super(DatePartNaturalQueryDescriptor, self).__init__(name)

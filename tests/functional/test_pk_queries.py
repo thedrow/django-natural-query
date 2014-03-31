@@ -19,6 +19,12 @@ class PrimaryKeyQueriesTestCase(TransactionTestCase):
 
         self.assertEqual(actual, expected)
 
+    def test_pk_is_1_when_fetching_a_record_with_pk_that_is_equal_to_1(self):
+        expected = 1
+        actual = TestModel.objects.get(TestModel.pk == 1).pk
+
+        self.assertEqual(actual, expected)
+
     def test_can_fetch_records_greater_than_1(self):
         expected = TestModel.objects.filter(pk__gt=1)
         actual = TestModel.objects.filter(TestModel.pk > 1)
