@@ -4,7 +4,7 @@ from django.db.models import Model, IntegerField, DateTimeField
 
 
 class TestModel(Model):
-    foo = IntegerField()
+    foo = IntegerField(null=True)
     bar = IntegerField(default=1)
     created_at = DateTimeField(auto_now=True)
 

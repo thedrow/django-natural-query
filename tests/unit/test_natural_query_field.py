@@ -16,8 +16,8 @@ class NaturalQueryFieldTestCase(SimpleTestCase):
             self.fail('TestModel has no attribute named foo')
 
     def test_a_query_descriptor_is_not_added_to_the_model_when_a_class_attribute_already_exists(self):
-        sut = NaturalQueryField(name='pk')
+        sut = NaturalQueryField(name='clean')
 
-        sut.contribute_to_class(TestModel, 'pk')
+        sut.contribute_to_class(TestModel, 'clean')
 
-        self.assertNotIsInstance(TestModel.pk, NaturalQueryDescriptor)
+        self.assertNotIsInstance(TestModel.clean, NaturalQueryDescriptor)
