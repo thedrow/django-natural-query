@@ -1,4 +1,5 @@
 from django.db.models import F, Q
+from django.utils.functional import cached_property
 
 
 def _get_value_or_field(other):
@@ -186,32 +187,32 @@ class DateNaturalQueryDescriptor(NaturalQueryDescriptor):
     def _construct_natural_query_descriptor_for_date_part(self, date_part):
         return DatePartNaturalQueryDescriptor(self.name, date_part)
 
-    @property
+    @cached_property
     def year(self):
         return self._construct_natural_query_descriptor_for_date_part('year')
 
-    @property
+    @cached_property
     def month(self):
         return self._construct_natural_query_descriptor_for_date_part('month')
 
-    @property
+    @cached_property
     def day(self):
         return self._construct_natural_query_descriptor_for_date_part('day')
 
-    @property
+    @cached_property
     def week_day(self):
         return self._construct_natural_query_descriptor_for_date_part('week_day')
 
 
 class DateTimeNaturalQueryDescriptor(DateNaturalQueryDescriptor):
-    @property
+    @cached_property
     def hour(self):
         return self._construct_natural_query_descriptor_for_date_part('hour')
 
-    @property
+    @cached_property
     def minute(self):
         return self._construct_natural_query_descriptor_for_date_part('minute')
 
-    @property
+    @cached_property
     def second(self):
         return self._construct_natural_query_descriptor_for_date_part('second')
