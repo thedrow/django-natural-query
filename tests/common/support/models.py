@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.db.models import Model, IntegerField, DateTimeField
+from django.db.models import Model, IntegerField, DateTimeField, DateField
 
 
 class TestModel(Model):
     foo = IntegerField(null=True)
     bar = IntegerField(default=1)
+    created_at_date = DateField(auto_now=True)
     created_at = DateTimeField(auto_now=True)
 
     def __repr__(self):
