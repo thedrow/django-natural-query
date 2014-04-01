@@ -1,4 +1,4 @@
-from django.db.models import Field, DateField, DateTimeField
+from django.db.models import Field, DateField, DateTimeField, ForeignKey
 
 from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor
 
@@ -21,7 +21,7 @@ class DateTimeNaturalQueryField(DateTimeField, NaturalQueryField):
     query_descriptor = DateTimeNaturalQueryDescriptor
 
 
-class ForeignKeyNaturalQueryField(NaturalQueryField):
+class ForeignKeyNaturalQueryField(ForeignKey, NaturalQueryField):
     query_descriptor = NaturalQueryDescriptor
 
     def contribute_to_class(self, cls, name, virtual_only=False):
