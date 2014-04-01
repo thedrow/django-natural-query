@@ -1,9 +1,10 @@
 from unittest import skip
+
 from django.db.models import Q, F
 from mock import sentinel
 
 from natural_query.query import DateTimeNaturalQueryDescriptor
-from tests.common.support import assertQObjectsEqual
+from tests.unit.support import assertQObjectsEqual
 from tests.unit.test_date_natural_query_descriptor import DateNaturalQueryDescriptorTestCase
 
 

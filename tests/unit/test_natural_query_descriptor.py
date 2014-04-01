@@ -1,9 +1,11 @@
 from unittest import expectedFailure
+
 from django.db.models import Q, Field, F
 from django.test import SimpleTestCase
 from mock import sentinel
+
 from natural_query.query import NaturalQueryDescriptor
-from tests.common.support import assertQObjectsEqual
+from tests.unit.support import assertQObjectsEqual
 
 
 class NaturalQueryDescriptorTestCase(SimpleTestCase):
@@ -285,7 +287,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.iexact(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_contains_generates_the_right_expression_for_the_contains_lookup(self):
         sut = self.system_under_test
 
@@ -304,7 +306,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.contains(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_icontains_generates_the_right_expression_for_the_icontains_lookup(self):
         sut = self.system_under_test
 
@@ -323,7 +325,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.icontains(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_startswith_generates_the_right_expression_for_the_startswith_lookup(self):
         sut = self.system_under_test
 
@@ -342,7 +344,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.startswith(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_istartswith_generates_the_right_expression_for_the_istartswith_lookup(self):
         sut = self.system_under_test
 
@@ -380,7 +382,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.endswith(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_iendswith_generates_the_right_expression_for_the_iendswith_lookup(self):
         sut = self.system_under_test
 
@@ -399,7 +401,7 @@ class NaturalQueryDescriptorTestCase(SimpleTestCase):
         actual = field1.iendswith(field2)
 
         self.assertEqual(actual, expected)
-        
+
     def test_search_generates_the_right_expression_for_the_search_lookup(self):
         sut = self.system_under_test
 
