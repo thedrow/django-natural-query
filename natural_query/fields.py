@@ -1,4 +1,4 @@
-from django.db.models import Field, DateField, DateTimeField, ForeignKey
+from django.db.models import Field, DateField, DateTimeField, ForeignKey, OneToOneField
 
 from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor
 
@@ -31,4 +31,8 @@ class RelatedFieldNaturalQueryMixin(object):
 
 
 class ForeignKeyNaturalQueryField(ForeignKey, RelatedFieldNaturalQueryMixin):
+    query_descriptor = NaturalQueryDescriptor
+
+
+class OneToOneNaturalQueryField(OneToOneField, RelatedFieldNaturalQueryMixin):
     query_descriptor = NaturalQueryDescriptor
