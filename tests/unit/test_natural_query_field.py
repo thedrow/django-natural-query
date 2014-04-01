@@ -1,4 +1,5 @@
 from django.test import SimpleTestCase
+
 from natural_query.fields import NaturalQueryField
 from natural_query.query import NaturalQueryDescriptor
 from tests.common.support.models import TestModel
@@ -7,6 +8,8 @@ from tests.common.support.models import TestModel
 class NaturalQueryFieldTestCase(SimpleTestCase):
     def test_a_query_descriptor_is_added_to_the_model(self):
         sut = NaturalQueryField(name='foo')
+
+        del TestModel.foo
 
         sut.contribute_to_class(TestModel, 'foo')
 
