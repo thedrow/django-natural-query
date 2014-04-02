@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 from django.apps import AppConfig, apps
 import itertools
-from django.db.models import DateField, DateTimeField
-from natural_query.fields import NaturalQueryField
+from django.db.models import DateField, DateTimeField, ForeignKey
+
+from natural_query.fields import NaturalQueryField, ForeignKeyNaturalQueryField
 from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor, \
     PrimaryKeyNaturalQueryDescriptor
 
@@ -33,3 +34,12 @@ class NaturalQueryConfig(AppConfig):
                         setattr(model, field.name, DateTimeNaturalQueryDescriptor(field.name))
                     else:
                         setattr(model, field.name, NaturalQueryDescriptor(field.name))
+
+            non_natural_foreign_key_fields = [field for field in model._meta.fields if
+                                              not isinstance(field, ForeignKeyNaturalQueryField) and isinstance(field,
+                                                                                                                ForeignKey)]
+
+            for field in non_natural_foreign_key_fields:
+                relation_id_attribute_name = '%s_id' % field.name
+                if not hasattr(model, relation_id_attribute_name):
+                    setattr(model, relation_id_attribute_name, NaturalQueryDescriptor(relation_id_attribute_name))
