@@ -1,2 +1,2 @@
-https://www.djangoproject.com/download/1.7b1/tarball/
+https://www.djangoproject.com/download/1.7.b4/tarball/
 six==1.5.2
