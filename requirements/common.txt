@@ -1,2 +1,2 @@
-https://www.djangoproject.com/download/1.7.b4/tarball/
+Django>=1.7.0,<1.8.0
 six==1.5.2
