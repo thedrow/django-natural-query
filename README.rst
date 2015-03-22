@@ -12,11 +12,11 @@ django-natural-query
 
 Natural queries using objects and operators for Django.
 
-**Supported Django versions**: 1.7a2 and above
+**Supported Django versions**: 1.8rc1 and above
 
 .. warning::
-    This project is currently not production ready and uses the beta version of Django 1.7.
-    Once Django 1.7 is released this project will stabilize.
+    This project is currently not production ready and uses the RC1 version of Django 1.8.
+    This will hopefully land on Django 2.0.
 
 Overview
 ========
