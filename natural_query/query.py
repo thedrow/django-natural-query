@@ -114,9 +114,18 @@ class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
         return self._transform_operator_to_query_object('iregex', other)
 
     def in_values(self, *args):
+        args = list(args)
+        for i, arg in enumerate(args):
+            if isinstance(arg, NaturalQueryDescriptor):
+                args[i] = F(arg.name)
+        args = tuple(args)
         return self._transform_operator_to_query_object('in', args)
 
     def between(self, low, high):
+        if isinstance(low, NaturalQueryDescriptor):
+            low = F(low.name)
+        if isinstance(high, NaturalQueryDescriptor):
+            high = F(high.name)
         return self._transform_operator_to_query_object('range', (low, high))
 
 

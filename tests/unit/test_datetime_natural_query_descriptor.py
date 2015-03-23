@@ -9,6 +9,12 @@ from tests.unit.test_date_natural_query_descriptor import DateNaturalQueryDescri
 
 
 class DateTimeNaturalQueryDescriptorTestCase(DateNaturalQueryDescriptorTestCase):
+    def assertEqual(self, first, second, msg=None):
+        if isinstance(first, Q) and isinstance(second, Q):
+            return assertQObjectsEqual(first, second, msg=msg)
+
+        return super(DateTimeNaturalQueryDescriptorTestCase, self).assertEqual(first, second, msg=msg)
+
     def setUp(self):
         self.addTypeEqualityFunc(Q, assertQObjectsEqual)
 

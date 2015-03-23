@@ -6,7 +6,7 @@ from django.apps import AppConfig, apps
 from django.db.models import DateField, DateTimeField
 from django.db.models.fields.related import RelatedField
 
-from natural_query.fields import NaturalQueryField, RelatedFieldNaturalQueryMixin
+from natural_query.fields import NaturalQueryField
 from natural_query.query import NaturalQueryDescriptor, DateNaturalQueryDescriptor, DateTimeNaturalQueryDescriptor, \
     PrimaryKeyNaturalQueryDescriptor
 
@@ -30,16 +30,15 @@ class NaturalQueryConfig(AppConfig):
 
             for field in non_natural_fields:
                 if not hasattr(model, field.name):
-                    if isinstance(field, DateField):
-                        setattr(model, field.name, DateNaturalQueryDescriptor(field.name))
-                    elif isinstance(field, DateTimeField):
+                    if isinstance(field, DateTimeField):
                         setattr(model, field.name, DateTimeNaturalQueryDescriptor(field.name))
+                    elif isinstance(field, DateField):
+                        setattr(model, field.name, DateNaturalQueryDescriptor(field.name))
                     else:
                         setattr(model, field.name, NaturalQueryDescriptor(field.name))
 
             non_natural_foreign_key_fields = [field for field in model._meta.fields if
-                                              not isinstance(field, RelatedFieldNaturalQueryMixin) and isinstance(field,
-                                                                                                                  RelatedField)]
+                                              isinstance(field, RelatedField)]
 
             for field in non_natural_foreign_key_fields:
                 relation_id_attribute_name = '%s_id' % field.name
