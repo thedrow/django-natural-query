@@ -10,6 +10,9 @@ def assertQObjectsEqual(first, second, msg=None):
 
     are_expressions_equivalent = False
     if not are_expressions_exactly_equal:
+        first.children = sorted(first.children, key=lambda c: c[0][0])
+        second.children = sorted(second.children, key=lambda c: c[0][0])
+
         first_node = first.children[0][1]
         second_node = second.children[0][1]
 
