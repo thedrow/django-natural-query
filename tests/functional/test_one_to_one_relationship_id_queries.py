@@ -58,3 +58,9 @@ class PrimaryKeyQueriesTestCase(TransactionTestCase):
         actual = TestModel.objects.filter((TestModel.one2one_id > 1) | (TestModel.bar == 1))
 
         self.assertEqual(list(actual), list(expected))
+
+    def test_can_fetch_records_with_one2one_baz_equal_to_1(self):
+        expected = TestModel.objects.filter(one2one__baz=1)
+        actual = TestModel.objects.filter(TestModel.one2one.baz == 1)
+
+        self.assertEqual(list(actual), list(expected))

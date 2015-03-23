@@ -16,4 +16,4 @@ class TestModel(Model):
 
 
 class TestModel2(Model):
-    pass
+    baz = IntegerField(default=1)

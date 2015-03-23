@@ -1,4 +1,5 @@
-from django.db.models import F, Q
+from django.db.models import F, Q, Field
+from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 from django.utils.functional import cached_property
 
 
@@ -14,7 +15,10 @@ def create_query_object(constructed_lookup, other):
 
 class NaturalQueryDescriptorBase(object):
     def __init__(self, name):
-        self.name = name
+        if isinstance(name, Field):
+            self.name = name.name
+        else:
+            self.name = name
 
     def _transform_operator_to_query_object(self, lookup_type, other):
         other = _get_value_or_field(other)
@@ -127,6 +131,10 @@ class NaturalQueryDescriptor(NaturalQueryDescriptorBase):
         if isinstance(high, NaturalQueryDescriptor):
             high = F(high.name)
         return self._transform_operator_to_query_object('range', (low, high))
+
+
+class ReverseSingleRelatedObjectNaturalQueryDescriptor(ReverseSingleRelatedObjectDescriptor, NaturalQueryDescriptor):
+    pass
 
 
 class PrimaryKeyNaturalQueryDescriptor(NaturalQueryDescriptor):
